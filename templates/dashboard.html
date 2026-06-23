@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Convertix History</title>
+  <meta name="description" content="Manage your conversion history, download previous conversions, and monitor files on the Convertix Dashboard.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <div class="nav-container">
+      <a href="{{ url_for('home') }}" class="logo" id="nav-logo">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        <span>Convertix</span>
+      </a>
+      
+      <button class="menu-toggle" id="menu-toggle-btn" aria-label="Toggle Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <ul class="nav-menu" id="nav-menu-list">
+        <li class="nav-item"><a href="{{ url_for('home') }}">Home</a></li>
+        <li class="nav-item"><a href="{{ url_for('home') }}#converters">Converters</a></li>
+        <li class="nav-item"><a href="{{ url_for('dashboard') }}" class="active" id="nav-dashboard-link">Dashboard</a></li>
+        <li class="nav-item"><a href="{{ url_for('home') }}#about">About</a></li>
+        <li class="nav-item">
+          <!-- Theme Toggle inside Mobile List -->
+          <button class="theme-toggle-btn mobile-theme-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        </li>
+        <li class="nav-item nav-auth-mobile">
+          <div class="nav-auth">
+            <a href="{{ url_for('signin') }}" class="btn btn-outline" id="mobile-signin-btn">Sign In</a>
+            <a href="{{ url_for('signup') }}" class="btn btn-filled" id="mobile-signup-btn">Sign Up</a>
+          </div>
+        </li>
+      </ul>
+
+      <div class="nav-auth nav-auth-desktop">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-toggle-desktop" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <a href="{{ url_for('signin') }}" class="btn btn-outline" id="desktop-signin-btn">Sign In</a>
+        <a href="{{ url_for('signup') }}" class="btn btn-filled" id="desktop-signup-btn">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard Container -->
+  <main>
+    <section class="dashboard-section">
+      <div class="section-container">
+        
+        <div class="dashboard-header">
+          <div>
+            <h1 class="hero-title" style="text-align: left; margin-bottom: 0.5rem; font-size: 2.75rem;">Conversion History</h1>
+            <p id="dashboard-user-greeting" style="font-weight: 500; opacity: 0.9;">Showing history for guest session. Sign in to sync across devices.</p>
+          </div>
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <button class="btn btn-filled" id="dashboard-download-all-btn" style="display: none;">
+              <i class="fa-solid fa-download"></i> Download All (.zip)
+            </button>
+            <button class="btn btn-outline" id="clear-history-btn" style="display: none;">
+              <i class="fa-solid fa-trash-can"></i> Clear History
+            </button>
+          </div>
+        </div>
+
+        <!-- Search and Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-group search-group">
+            <label class="filter-label" for="search-input"><i class="fa-solid fa-magnifying-glass"></i></label>
+            <input type="text" id="search-input" class="filter-input" placeholder="Search by file name...">
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label" for="source-filter">Source Format</label>
+            <select id="source-filter" class="select-dropdown">
+              <option value="all">All Formats</option>
+              <option value="png">PNG</option>
+              <option value="jpg">JPG</option>
+              <option value="jpeg">JPEG</option>
+              <option value="webp">WebP</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label" for="target-filter">Target Format</label>
+            <select id="target-filter" class="select-dropdown">
+              <option value="all">All Formats</option>
+              <option value="png">PNG</option>
+              <option value="jpg">JPG</option>
+              <option value="jpeg">JPEG</option>
+              <option value="webp">WebP</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- History Table Area -->
+        <div class="history-table-wrapper" id="history-table-wrapper" style="display: none;">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>File Size</th>
+                <th>Conversion Path</th>
+                <th>Conversion Date & Time</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body">
+              <!-- Dynamically populated in app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State Placeholder -->
+        <div class="empty-history" id="empty-history-box">
+          <div class="empty-history-icon">
+            <i class="fa-solid fa-folder-open"></i>
+          </div>
+          <h3>No Conversion History Found</h3>
+          <p style="max-width: 500px; margin: 0 auto; opacity: 0.85;">
+            You haven't converted any files during this session or search results are empty. Go back to the homepage to upload and convert images.
+          </p>
+          <a href="{{ url_for('home') }}" class="btn btn-filled">
+            <i class="fa-solid fa-arrow-left"></i> Back to Converter
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="{{ url_for('home') }}" class="logo">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>Convertix</span>
+          </a>
+          <p class="footer-desc">A minimal, lightning-fast file converter designed to protect your privacy by processing everything locally.</p>
+        </div>
+        
+        <div class="footer-links-grid">
+          <div class="footer-column">
+            <h4>Menu</h4>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('home') }}#converters">Converters</a>
+            <a href="{{ url_for('home') }}#about">About</a>
+          </div>
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Convertix. All rights reserved.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" aria-label="Github"><i class="fa-brands fa-github"></i></a>
+          <a href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JavaScript file -->
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - Convertix</title>
+  <meta name="description" content="Sign In to your Convertix account to manage files, configure settings, and convert images faster.">
+  <link class="styles" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <div class="nav-container">
+      <a href="{{ url_for('home') }}" class="logo" id="nav-logo">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        <span>Convertix</span>
+      </a>
+      
+      <button class="menu-toggle" id="menu-toggle-btn" aria-label="Toggle Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <ul class="nav-menu" id="nav-menu-list">
+        <li class="nav-item"><a href="{{ url_for('home') }}">Home</a></li>
+        <li class="nav-item"><a href="{{ url_for('home') }}#converters">Converters</a></li>
+        <li class="nav-item"><a href="{{ url_for('dashboard') }}" id="nav-dashboard-link">Dashboard</a></li>
+        <li class="nav-item"><a href="{{ url_for('home') }}#about">About</a></li>
+        <li class="nav-item">
+          <!-- Theme Toggle inside Mobile List -->
+          <button class="theme-toggle-btn mobile-theme-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        </li>
+        <li class="nav-item nav-auth-mobile">
+          <div class="nav-auth">
+            <a href="{{ url_for('signin') }}" class="btn btn-outline active" id="mobile-signin-btn">Sign In</a>
+            <a href="{{ url_for('signup') }}" class="btn btn-filled" id="mobile-signup-btn">Sign Up</a>
+          </div>
+        </li>
+      </ul>
+
+      <div class="nav-auth nav-auth-desktop">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-toggle-desktop" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <a href="{{ url_for('signin') }}" class="btn btn-outline active" id="desktop-signin-btn">Sign In</a>
+        <a href="{{ url_for('signup') }}" class="btn btn-filled" id="desktop-signup-btn">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Auth Content -->
+  <main>
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="logo auth-logo">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>Convertix</span>
+          </div>
+          <h2 class="auth-title">Welcome Back</h2>
+          <p class="auth-subtitle">Sign in to your account to continue</p>
+        </div>
+
+        <form id="signin-form" onsubmit="handleSignIn(event)">
+          <!-- Email field -->
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" id="email" class="form-input" placeholder="name@example.com" required>
+          </div>
+
+          <!-- Password field -->
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+          </div>
+
+          <!-- Remember me checkbox -->
+          <div class="form-checkbox-row">
+            <label class="checkbox-label" for="remember-me">
+              <input type="checkbox" id="remember-me" class="checkbox-input">
+              Remember me
+            </label>
+            <a href="#" style="font-weight: 600; font-size: 0.85rem;">Forgot Password?</a>
+          </div>
+
+          <!-- Sign In button -->
+          <button type="submit" class="btn btn-filled btn-auth-submit">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="{{ url_for('home') }}" class="logo">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>Convertix</span>
+          </a>
+          <p class="footer-desc">A minimal, lightning-fast file converter designed to protect your privacy by processing everything locally.</p>
+        </div>
+        
+        <div class="footer-links-grid">
+          <div class="footer-column">
+            <h4>Menu</h4>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('home') }}#converters">Converters</a>
+            <a href="{{ url_for('home') }}#about">About</a>
+          </div>
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Convertix. All rights reserved.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" aria-label="Github"><i class="fa-brands fa-github"></i></a>
+          <a href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JavaScript file -->
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
